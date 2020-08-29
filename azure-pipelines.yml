@@ -46,7 +46,6 @@ stages:
         pip3 install -r requirements.txt        
       workingDirectory: $(projectRoot)
       displayName: "Install requirements"
-
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -55,7 +54,7 @@ stages:
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
-
+        
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       displayName: 'Upload package'
       artifact: drop
@@ -82,7 +81,6 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Deploy Azure Web App : notesappdemo'
             inputs:
-              script: python3 manage.py
               azureSubscription: $(azureServiceConnectionId)
               appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
